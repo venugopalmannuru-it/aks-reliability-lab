@@ -1,0 +1,22 @@
+config:
+  environment: development
+  logLevel: DEBUG
+
+image:
+  pullPolicy: IfNotPresent
+
+resources:
+  requests:
+    cpu: 10m
+    memory: 24Mi
+  limits:
+    cpu: 100m
+    memory: 64Mi
+
+autoscaling:
+  enabled: false
+
+replicaCount: 1
+
+podDisruptionBudget:
+  enabled: false

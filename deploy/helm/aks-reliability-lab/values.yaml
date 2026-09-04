@@ -1,0 +1,98 @@
+replicaCount: 2
+
+image:
+  repository: ghcr.io/venugopalmannuru-it/aks-reliability-lab
+  pullPolicy: IfNotPresent
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  name: ""
+  annotations: {}
+
+podAnnotations:
+  prometheus.io/scrape: "true"
+  prometheus.io/path: /metrics
+  prometheus.io/port: "8080"
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 65532
+  runAsGroup: 65532
+  fsGroup: 65532
+  seccompProfile:
+    type: RuntimeDefault
+
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop:
+      - ALL
+
+config:
+  environment: development
+  logLevel: INFO
+  port: "8080"
+  shutdownDelay: 5s
+  shutdownTimeout: 20s
+
+# Reference a pre-created Secret; the chart never stores secret values.
+existingSecret: ""
+
+service:
+  type: ClusterIP
+  port: 80
+
+resources:
+  requests:
+    cpu: 25m
+    memory: 32Mi
+  limits:
+    cpu: 200m
+    memory: 96Mi
+
+probes:
+  startup:
+    failureThreshold: 12
+    periodSeconds: 5
+  readiness:
+    failureThreshold: 3
+    periodSeconds: 5
+  liveness:
+    failureThreshold: 3
+    periodSeconds: 10
+
+rollingUpdate:
+  maxUnavailable: 0
+  maxSurge: 1
+minReadySeconds: 5
+revisionHistoryLimit: 5
+terminationGracePeriodSeconds: 30
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 4
+  targetCPUUtilizationPercentage: 70
+  scaleDownStabilizationSeconds: 300
+
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+
+networkPolicy:
+  enabled: true
+  allowSameNamespace: true
+  monitoringNamespace: monitoring
+  monitoringPodLabels:
+    app.kubernetes.io/name: prometheus
+
+serviceMonitor:
+  enabled: false
+  interval: 30s
+  labels: {}

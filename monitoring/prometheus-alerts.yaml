@@ -1,0 +1,31 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: reliability-api
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/part-of: aks-reliability-lab
+spec:
+  groups:
+    - name: reliability-api.rules
+      rules:
+        - alert: ReliabilityAPIUnavailable
+          expr: up{job=~".*reliability.*"} == 0
+          for: 2m
+          labels:
+            severity: critical
+          annotations:
+            summary: Reliability API scrape target is unavailable
+            description: Prometheus has been unable to scrape the API for two minutes.
+        - alert: ReliabilityAPIHighErrorRate
+          expr: |
+            sum(rate(http_requests_total{route!="metrics",status=~"5.."}[5m]))
+            /
+            clamp_min(sum(rate(http_requests_total{route!="metrics"}[5m])), 0.001)
+            > 0.05
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: Reliability API 5xx ratio is above 5%
+            description: The five-minute server error ratio has stayed above 5% for ten minutes.

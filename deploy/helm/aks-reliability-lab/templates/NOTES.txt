@@ -1,0 +1,6 @@
+1. Forward the service locally:
+   kubectl port-forward service/{{ include "aks-reliability-lab.fullname" . }} 8080:{{ .Values.service.port }}
+
+2. Verify health and metrics:
+   curl -fsS http://127.0.0.1:8080/healthz
+   curl -fsS http://127.0.0.1:8080/metrics

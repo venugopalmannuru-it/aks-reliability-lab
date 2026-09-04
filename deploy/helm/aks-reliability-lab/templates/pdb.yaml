@@ -1,0 +1,13 @@
+{{- if .Values.podDisruptionBudget.enabled }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "aks-reliability-lab.fullname" . }}
+  labels:
+    {{- include "aks-reliability-lab.labels" . | nindent 4 }}
+spec:
+  minAvailable: {{ .Values.podDisruptionBudget.minAvailable }}
+  selector:
+    matchLabels:
+      {{- include "aks-reliability-lab.selectorLabels" . | nindent 6 }}
+{{- end }}

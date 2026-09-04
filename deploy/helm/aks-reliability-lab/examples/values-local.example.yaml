@@ -1,0 +1,13 @@
+# Build `aks-reliability-lab:local`, then load it into kind/minikube before use.
+image:
+  repository: aks-reliability-lab
+  tag: local
+  pullPolicy: Never
+
+autoscaling:
+  enabled: false
+
+replicaCount: 2
+
+config:
+  environment: local-cluster

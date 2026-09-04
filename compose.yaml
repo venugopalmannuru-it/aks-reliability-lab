@@ -1,0 +1,21 @@
+services:
+  api:
+    build:
+      context: .
+      args:
+        VERSION: compose
+    image: aks-reliability-lab:local
+    environment:
+      APP_ENV: local
+      LOG_LEVEL: INFO
+      SHUTDOWN_DELAY: 1s
+    ports:
+      - "8080:8080"
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,mode=1777
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    restart: unless-stopped

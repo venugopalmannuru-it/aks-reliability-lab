@@ -1,0 +1,13 @@
+apiVersion: v2
+name: aks-reliability-lab
+description: A hardened, observable API workload for Kubernetes reliability demonstrations
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+kubeVersion: ">=1.30.0-0"
+home: https://github.com/venugopalmannuru-it/aks-reliability-lab
+sources:
+  - https://github.com/venugopalmannuru-it/aks-reliability-lab
+maintainers:
+  - name: Venu Gopal Reddy Mannuru
+    url: https://github.com/venugopalmannuru-it
