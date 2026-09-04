@@ -18,7 +18,7 @@ jobs:
     name: Go quality gates
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
       - uses: actions/setup-go@v7
@@ -38,7 +38,7 @@ jobs:
     name: Kubernetes and Helm validation
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
       - uses: azure/setup-helm@v5
@@ -65,7 +65,7 @@ jobs:
     name: Container and security checks
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           persist-credentials: false
       - uses: docker/setup-buildx-action@v4
